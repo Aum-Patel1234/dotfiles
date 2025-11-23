@@ -40,16 +40,17 @@ backup_if_exists() {
 for pkg in "$DOTFILES_DIR"/*/; do
   [ -d "$pkg" ] || continue
   pkg="$(basename "$pkg")"
-  # skip hidden or helper dirs
+
+  # skip hidden dirs, git dirs, and stow source dirs
   case "$pkg" in
-  .git | .github | docs) continue ;;
+  .git | .github | docs | stow-*) continue ;;
   esac
+
   echo
   echo "Processing package: $pkg"
 
   # find all files in the package and compute the intended $HOME target
   while IFS= read -r -d $'\0' file; do
-    # remove leading package/ prefix
     rel="${file#"$DOTFILES_DIR/$pkg/"}"
     target="$TARGET/$rel"
     backup_if_exists "$target"
