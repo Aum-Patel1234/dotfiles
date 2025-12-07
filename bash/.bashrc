@@ -167,6 +167,16 @@ alias cmk='cd build && cmake .. && make'
 alias cmkre='mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS_RELEASE="-O3 -march=native -flto" .. && make -j$(nproc)'
 alias rel='source ~/.bashrc'
 
+function le() {
+  target_file=".venv/bin/activate"
+
+  if test -f "$target_file"; then
+    source "$target_file"
+  else
+    echo "No virtual env found."
+  fi
+}
+
 function gc() {
   read -p "Enter commit message: " msg
   git commit -m "$msg"
