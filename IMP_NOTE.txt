@@ -1,0 +1,7 @@
+# Disable two Ubuntu GNOME extensions that often cause high CPU usage:
+# 1. tiling-assistant@ubuntu.com  → Ubuntu’s window-tiling extension (optional, can spike CPU on AMD GPUs)
+# 2. ubuntu-dock@ubuntu.com       → Ubuntu’s custom dock on the left side (optional; GNOME works fine without it)
+
+gnome-extensions disable tiling-assistant@ubuntu.com
+gnome-extensions disable ubuntu-dock@ubuntu.com
+
