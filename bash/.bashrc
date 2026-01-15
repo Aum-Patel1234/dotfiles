@@ -130,6 +130,7 @@ export PATH="$HOME/vcpkg:$PATH"
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/go/bin
 
+export CONDA_AUTO_ACTIVATE_BASE=false
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/aum/anaconda3/bin/conda' 'shell.bash' 'hook' 2>/dev/null)"
@@ -154,6 +155,7 @@ alias c='clear'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ml='cd ~/Desktop/Artificial_Intelligence/Machine_Learning/'
+alias ai='cd ~/Desktop/Artificial_Intelligence/'
 alias dl='cd ~/Desktop/Artificial_Intelligence/deep_learning/'
 alias ad='cd ~/Desktop/Android\ Development/'
 alias exp='cd ~/Desktop/exploring/'
@@ -190,3 +192,32 @@ export NVM_DIR="$HOME/.nvm"
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 . "$HOME/.cargo/env"
+
+. "$HOME/.local/bin/env"
+
+f() {
+  local dir
+  dir=$(find . -type d -name ".git" -prune | sed 's|/\.git$||' | fzf) || return
+
+  local tmux_cmd
+  tmux_cmd="if [ -f '$dir/.venv/bin/activate' ]; then
+               source '$dir/.venv/bin/activate'
+             fi
+             cd '$dir'
+             nvim
+             exec \$SHELL"
+
+  if [ -n "$TMUX" ]; then
+    tmux new-window -c "$dir" "$tmux_cmd"
+  else
+    tmux new-session -c "$dir" "$tmux_cmd"
+  fi
+}
+
+cb() {
+  if command -v conda >/dev/null 2>&1; then
+    conda activate base
+  else
+    echo "Conda not found in PATH"
+  fi
+}
